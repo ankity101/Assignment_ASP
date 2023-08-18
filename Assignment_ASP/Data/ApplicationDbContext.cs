@@ -11,7 +11,14 @@ namespace Assignment_ASP.Data
 
         }
 
-        public PostDataModel postDataModel { get; set; }
+         public DbSet<PostDataModel> postData { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PostDataModel>().HasData(
+                 new PostDataModel { Name="Test"  , PostImage="Test-img.jpg" , ProfileImage="Profile-test-img.jpg", Time="18th Aug"}
+                );
+        }
 
     }
 }

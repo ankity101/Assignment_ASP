@@ -13,10 +13,16 @@ namespace Assignment_ASP.Data
 
          public DbSet<PostDataModel> postData { get; set; }
 
+        public  DbSet<FriendsModel> friends { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PostDataModel>().HasData(
                  new PostDataModel { Name="Test"  , PostImage="Test-img.jpg" , ProfileImage="Profile-test-img.jpg", Time="18th Aug"}
+                );
+
+            modelBuilder.Entity<FriendsModel>().HasData(
+                new FriendsModel { Name="Saurabh",ProfileImage="Profile-img.jpg" }
                 );
         }
 

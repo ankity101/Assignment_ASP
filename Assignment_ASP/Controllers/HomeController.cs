@@ -55,13 +55,8 @@ namespace Assignment_ASP.Controllers
         public IActionResult Update([FromBody] PostDataModel postData)
         {
             try
-            {
-               PostDataModel? postDataToUpdate =  dbContext.postData.Find(postData.Name);
-                if (postDataToUpdate == null)
-                {
-                    return BadRequest();
-                }
-                dbContext.postData.Update(postDataToUpdate);
+            { 
+                dbContext.postData.Update(postData);
                 dbContext.SaveChanges();
                 return Ok();
             }

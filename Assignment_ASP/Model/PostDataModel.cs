@@ -1,7 +1,10 @@
-﻿namespace Assignment_ASP.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Assignment_ASP.Model
 {
     public class PostDataModel
     {
+        [Key]
         public string Name { get; set; }
 
         public string ProfileImage { get; set; }

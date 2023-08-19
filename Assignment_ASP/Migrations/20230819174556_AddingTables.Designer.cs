@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment_ASP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230818151523_AddingFriendsModelTableAndSeedingData")]
-    partial class AddingFriendsModelTableAndSeedingData
+    [Migration("20230819174556_AddingTables")]
+    partial class AddingTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,13 +36,6 @@ namespace Assignment_ASP.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("friends");
-
-                    b.HasData(
-                        new
-                        {
-                            Name = "Saurabh",
-                            ProfileImage = "Profile-img.jpg"
-                        });
                 });
 
             modelBuilder.Entity("Assignment_ASP.Model.PostDataModel", b =>
@@ -74,6 +67,71 @@ namespace Assignment_ASP.Migrations
                             ProfileImage = "Profile-test-img.jpg",
                             Time = "18th Aug"
                         });
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.UserFriends", b =>
+                {
+                    b.Property<int>("UserModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserModelId", "Name");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("UserFriends");
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.UserModel", b =>
+                {
+                    b.Property<int>("UserModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserModelId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserModelId");
+
+                    b.ToTable("users");
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.UserFriends", b =>
+                {
+                    b.HasOne("Assignment_ASP.Model.FriendsModel", "friends")
+                        .WithMany("users")
+                        .HasForeignKey("Name")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment_ASP.Model.UserModel", "Users")
+                        .WithMany("friends")
+                        .HasForeignKey("UserModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
+
+                    b.Navigation("friends");
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.FriendsModel", b =>
+                {
+                    b.Navigation("users");
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.UserModel", b =>
+                {
+                    b.Navigation("friends");
                 });
 #pragma warning restore 612, 618
         }

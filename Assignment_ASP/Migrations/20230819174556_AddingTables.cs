@@ -5,11 +5,37 @@
 namespace Assignment_ASP.Migrations
 {
     /// <inheritdoc />
-    public partial class ManyToManyUserFriendRelationship : Migration
+    public partial class AddingTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "friends",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_friends", x => x.Name);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "postData",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_postData", x => x.Name);
+                });
+
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
@@ -17,17 +43,11 @@ namespace Assignment_ASP.Migrations
                     UserModelId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FriendListName = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.UserModelId);
-                    table.ForeignKey(
-                        name: "FK_users_friends_FriendListName",
-                        column: x => x.FriendListName,
-                        principalTable: "friends",
-                        principalColumn: "Name");
                 });
 
             migrationBuilder.CreateTable(
@@ -54,22 +74,28 @@ namespace Assignment_ASP.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "postData",
+                columns: new[] { "Name", "PostImage", "ProfileImage", "Time" },
+                values: new object[] { "Test", "Test-img.jpg", "Profile-test-img.jpg", "18th Aug" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_UserFriends_Name",
                 table: "UserFriends",
                 column: "Name");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_users_FriendListName",
-                table: "users",
-                column: "FriendListName");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "postData");
+
+            migrationBuilder.DropTable(
                 name: "UserFriends");
+
+            migrationBuilder.DropTable(
+                name: "friends");
 
             migrationBuilder.DropTable(
                 name: "users");

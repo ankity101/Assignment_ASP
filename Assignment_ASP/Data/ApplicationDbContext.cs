@@ -17,31 +17,39 @@ namespace Assignment_ASP.Data
 
         public DbSet<UserModel> users { get; set; }
 
-        
+        private List<FriendsModel> GetFriends()
+        {
+            return Enumerable.Range(1, 100)
+                .Select(index => new FriendsModel
+                {
+                    Name = $"Name{index}",
+                    ProfileImage = $"Photo{index}.jpg"
+                })
+                .ToList();
+        }
+        private List<UserModel> GetUsers()
+        {
+            return Enumerable.Range(1, 100)
+                .Select(index => new UserModel
+                {
+                    UserModelId = index,
+                    Name = $"Name{index}",
+                    ProfileImage = $"Photo{index}.jpg"
+                })
+                .ToList();
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PostDataModel>().HasData(
                  new PostDataModel { Name="Test"  , PostImage="Test-img.jpg" , ProfileImage="Profile-test-img.jpg", Time="18th Aug"}
                 );
+            
+           
 
-            modelBuilder.Entity<FriendsModel>().HasData(
-                new FriendsModel { Name="Saurabh",ProfileImage="Profile-img.jpg"  },
-                new FriendsModel { Name = "Abhishek", ProfileImage = "Abhishek-img.jpg" },
-                new FriendsModel { Name = "Shivansh", ProfileImage = "SHivansh-img.jpg" },
-                new FriendsModel { Name = "Ankush", ProfileImage = "Ankush-img.jpg" },
-                new FriendsModel { Name = "Ayush", ProfileImage = "Ayush-img.jpg" },
-                new FriendsModel { Name = "Deepak", ProfileImage = "Deepak-img.jpg" }
-                );
-
-            //modelBuilder.Entity<UserModel>().HasData(
-            //    new UserModel 
-            //    {
-            //        FriendList= new FriendsModel { Name="Saurabh" ,ProfileImage="SaurabhImg.jpg"} ,
-            //        Name="Ankit" ,
-            //        Id = 27, ProfileImage="ankit-img.jpg" 
-            //    }
-            //    );
+             
 
             modelBuilder.Entity<UserFriends>()
                 .HasKey(uf => new { uf.UserModelId, uf.Name });
@@ -55,7 +63,10 @@ namespace Assignment_ASP.Data
                 .WithMany(uf => uf.users)
                 .HasForeignKey(uf => uf.Name);
 
-             
+            modelBuilder.Entity<FriendsModel>().
+               HasData(GetFriends());
+            modelBuilder.Entity<UserModel>().
+               HasData(GetUsers());
 
         }
 

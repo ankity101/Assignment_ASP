@@ -3,6 +3,7 @@ using Assignment_ASP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment_ASP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230819121541_AddingManyToManyRelationshipUpdated")]
+    partial class AddingManyToManyRelationshipUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,31 +42,6 @@ namespace Assignment_ASP.Migrations
                         {
                             Name = "Saurabh",
                             ProfileImage = "Profile-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Abhishek",
-                            ProfileImage = "Abhishek-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Shivansh",
-                            ProfileImage = "SHivansh-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Ankush",
-                            ProfileImage = "Ankush-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Ayush",
-                            ProfileImage = "Ayush-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Deepak",
-                            ProfileImage = "Deepak-img.jpg"
                         });
                 });
 

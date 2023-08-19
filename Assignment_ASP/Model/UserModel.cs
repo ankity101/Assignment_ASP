@@ -1,13 +1,21 @@
-﻿namespace Assignment_ASP.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Assignment_ASP.Model
 {
     public class UserModel
     {
-        public int Id { get; set; }
+        
+        public int UserModelId { get; set; }
         public string Name { get; set; }
 
         public string ProfileImage { get; set; }
 
-        public FriendsModel FriendList { get; set; }
+       
+
+
+        //Navigation Property
+
+        public ICollection<UserFriends> friends { get; set; }  
 
     }
 }

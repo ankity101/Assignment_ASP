@@ -3,6 +3,7 @@ using Assignment_ASP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment_ASP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230819113211_ManyToManyUserFriendRelationship")]
+    partial class ManyToManyUserFriendRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,31 +42,6 @@ namespace Assignment_ASP.Migrations
                         {
                             Name = "Saurabh",
                             ProfileImage = "Profile-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Abhishek",
-                            ProfileImage = "Abhishek-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Shivansh",
-                            ProfileImage = "SHivansh-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Ankush",
-                            ProfileImage = "Ankush-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Ayush",
-                            ProfileImage = "Ayush-img.jpg"
-                        },
-                        new
-                        {
-                            Name = "Deepak",
-                            ProfileImage = "Deepak-img.jpg"
                         });
                 });
 
@@ -121,6 +99,9 @@ namespace Assignment_ASP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserModelId"));
 
+                    b.Property<string>("FriendListName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -130,6 +111,8 @@ namespace Assignment_ASP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserModelId");
+
+                    b.HasIndex("FriendListName");
 
                     b.ToTable("users");
                 });
@@ -151,6 +134,15 @@ namespace Assignment_ASP.Migrations
                     b.Navigation("Users");
 
                     b.Navigation("friends");
+                });
+
+            modelBuilder.Entity("Assignment_ASP.Model.UserModel", b =>
+                {
+                    b.HasOne("Assignment_ASP.Model.FriendsModel", "FriendList")
+                        .WithMany()
+                        .HasForeignKey("FriendListName");
+
+                    b.Navigation("FriendList");
                 });
 
             modelBuilder.Entity("Assignment_ASP.Model.FriendsModel", b =>

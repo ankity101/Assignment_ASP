@@ -8,11 +8,11 @@ namespace Assignment_ASP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class PostDataController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
 
-        public HomeController(ApplicationDbContext dbContext)
+        public PostDataController(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

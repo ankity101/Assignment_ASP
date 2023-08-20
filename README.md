@@ -5,7 +5,7 @@ This README provides an overview of the ASP.NET Core API project, including inst
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Installation](#installation)
-3. [Usage](#usage)
+3. [ScreenShots](#screenshots)
 4. [API Documentation](#api-documentation)
 5. [API ENDPOINTS](#api-endpoins)
 

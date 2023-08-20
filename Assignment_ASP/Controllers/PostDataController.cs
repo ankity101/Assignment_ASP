@@ -11,43 +11,69 @@ namespace Assignment_ASP.Controllers
     public class PostDataController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<PostDataModel> logger;
 
-        public PostDataController(ApplicationDbContext dbContext)
+        public PostDataController(ApplicationDbContext dbContext , ILogger<PostDataModel> logger)
         {
             this.dbContext = dbContext;
+            this.logger = logger;
         }
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<PostDataModel> postdata = dbContext.postData.ToList();
-            if (postdata.Count == 0)
+            try
             {
-                return NotFound();
+                List<PostDataModel> postdata = dbContext.postData.ToList();
+                if (postdata.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(postdata);
             }
-            return Ok(postdata);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         [HttpGet]
         [Route("{id=string}")]
         public IActionResult GetById([FromRoute] string? st)
         {
-             
-            PostDataModel postData  =  dbContext.postData.Find(st);
-            if(postData==null)
-                return NotFound();
-            return Ok(postData);
+
+            try
+            {
+                PostDataModel postData = dbContext.postData.Find(st);
+                if (postData == null)
+                    return NotFound();
+                return Ok(postData);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] PostDataModel postData)
         {
-            if(postData  == null)
+            try
             {
-                return BadRequest();
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                dbContext.postData.Add(postData);
+                dbContext.SaveChanges();
+                return Ok();
             }
-             dbContext.postData.Add(postData);
-            dbContext.SaveChanges();
-            return Ok();
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         [HttpPut]
@@ -62,8 +88,8 @@ namespace Assignment_ASP.Controllers
             }
             catch (Exception ex)
             {
-
-                throw new Exception("Error Updating Request Contact Administrator");
+                logger.LogError(ex, ex.Message);
+                throw ;
             }
         }
 
@@ -71,12 +97,20 @@ namespace Assignment_ASP.Controllers
         [Route("{name=String}")]
         public IActionResult Delete([FromRoute] string name)
         {
-           PostDataModel? postDataModel =  dbContext.postData.Find(name);
-            if (postDataModel == null)
-                return NotFound();
-            dbContext.postData.Remove(postDataModel);
-            dbContext.SaveChanges();
-            return Ok();
+            try
+            {
+                PostDataModel? postDataModel = dbContext.postData.Find(name);
+                if (postDataModel == null)
+                    return NotFound();
+                dbContext.postData.Remove(postDataModel);
+                dbContext.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
     }
 }

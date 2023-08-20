@@ -10,32 +10,51 @@ namespace Assignment_ASP.Controllers
     public class FriendsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<FriendsModel> logger;
 
-        public FriendsController(ApplicationDbContext dbContext)
+        public FriendsController(ApplicationDbContext dbContext , ILogger<FriendsModel> logger)
         {
             this.dbContext = dbContext;
+            this.logger = logger;
         }
 
         [HttpGet]
         public IActionResult GET()
         {
-            List<FriendsModel> friendList = dbContext.friends.ToList();
-            if(friendList.Count == 0) {
-                return NotFound();
+            try
+            {
+                List<FriendsModel> friendList = dbContext.friends.ToList();
+                if (friendList.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(friendList);
             }
-            return Ok(friendList);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         [HttpPost]
         public IActionResult POST( [FromBody] FriendsModel friendsModel)
         {
-             if(ModelState.IsValid)
-             { 
-                  dbContext.friends.Add(friendsModel);
-                dbContext.SaveChanges();
-                return Ok();
-             }
-            return BadRequest();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    dbContext.friends.Add(friendsModel);
+                    dbContext.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         [HttpPut]
@@ -44,15 +63,17 @@ namespace Assignment_ASP.Controllers
         {
             try
             {
+
                 dbContext.friends.Update(friendsModel);
                 dbContext.SaveChanges();
                 return Ok();
             }
             catch (Exception ex)
             {
-
-                throw new Exception("Error Updating Request Contact Administrator");
+                logger.LogError(ex, ex.Message);
+                throw;
             }
+            
         }
 
 
@@ -60,12 +81,20 @@ namespace Assignment_ASP.Controllers
         [Route("{name=String}")]
         public IActionResult Delete([FromRoute] string name)
         {
-            FriendsModel? friendsModel = dbContext.friends.Find(name);
-            if (friendsModel == null)
-                return NotFound();
-            dbContext.friends.Remove(friendsModel);
-            dbContext.SaveChanges();
-            return Ok();
+            try
+            {
+                FriendsModel? friendsModel = dbContext.friends.Find(name);
+                if (friendsModel == null)
+                    return NotFound();
+                dbContext.friends.Remove(friendsModel);
+                dbContext.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
 

@@ -1,9 +1,20 @@
 using Assignment_ASP.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var logger = new LoggerConfiguration()
+                   .WriteTo.Console()
+                   .WriteTo.File("Logs/Assignment_ASP.log",rollingInterval: RollingInterval.Day)
+                   .MinimumLevel.Warning()
+                   .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

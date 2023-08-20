@@ -14,3 +14,5 @@ namespace Assignment_ASP.Model
         public ICollection<UserFriends> users { get; set; }
     }
 }
+
+ 

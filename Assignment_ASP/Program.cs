@@ -11,7 +11,7 @@ var logger = new LoggerConfiguration()
                    .WriteTo.Console()
                    .WriteTo.File("Logs/Assignment_ASP.log",rollingInterval: RollingInterval.Day)
                    .MinimumLevel.Warning()
-                   .CreateLogger();
+                   .CreateLogger(); 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
